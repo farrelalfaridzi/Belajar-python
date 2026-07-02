@@ -26,12 +26,30 @@ from save.save_manager import SaveManager
 
 class Game:
     def __init__(self):
+        self.create_player()
+        self.create_item()
+        self.create_monster()
+        self.create_shop()
+        self.create_world()
+
+    def start(self):
+        self.world.start()
+
+    def start_battle(self, monster):
+        battle = Battle(self.player,monster)
+        battle.start()
+
+    def create_player(self):
         self.player = Player("Farrel",100)
+
+    def create_item(self):
         self.wood = Weapon("Wood Sword",15,30)
         self.bow = Weapon("Regular bow",20,50)
         self.small = Potion("small potion",10,10)
         self.leather = Armor("Leather armor",10,20)
         self.iron = Armor("Iron armor",30,50)
+
+    def create_monster(self):
         self.goblin = Monster("Goblin",100,20,self.small,250)
         self.orc = Monster("Orc",180,30,self.leather,180)
         self.skeleton = Monster("Skeleton",250,40,self.bow,250)
@@ -41,18 +59,15 @@ class Game:
         self.monster.add_monster(self.orc)
         self.monster.add_monster(self.skeleton)
         self.monster.add_monster(self.dragon)
+
+    def create_shop(self):
         self.shop = Shop()
         self.shop.add_item(self.wood)
         self.shop.add_item(self.bow)
         self.shop.add_item(self.small)
         self.shop.add_item(self.leather)
         self.shop.add_item(self.iron)
+
+    def create_world(self):
         self.save = SaveManager()
         self.world = World(self.player,self.monster,self.shop,self.save)
-
-    def start(self):
-        self.world.start()
-
-    def start_battle(self, monster):
-        battle = Battle(self.player,monster)
-        battle.start()
